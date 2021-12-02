@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz app</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <div class="headerWrapper">
+            <button class="startBtn">start quiz</button>
+        </div>
+    </div>
+</header>
+<section class="quizBody">
+    <div class="container">
+        <div class="quizBodyWrapper">
+            <div class="quizTitle">
+                <h2>some rules of this quiz</h2>
+            </div>
+            <div class="quizRules">
+                <ol>
+                    <li>You will have only 15 seconds per each question.</li>
+                    <li>Once you select your answer, it can't be undone.</li>
+                    <li>You can't select any option once time goes off.</li>
+                    <li>You can't exit from the Quiz while you're playing.</li>
+                    <li>You'll get points on the basis of your correct answers.</li>
+                </ol>
+            </div>
+            <div class="continueButton">
+                <button class="exitBtn">exit quiz</button>
+                <button class="continueBtn">continue</button>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="quizs">
+    <div class="container">
+        <div class="quizContainer">
+            <div class="quizesWrapper">
+                <div class="timeAndTitle">
+                    <div class="title">
+                        <h2>Awesome Quiz application</h2>
+                    </div>
+                    <div class="time">
+                        <p>time left <span class="runningTIme">15</span></p>
+                    </div>
+                </div>
+                <div class="timeLeft"></div>
+                <div class="quizItems">
+                    <h2 class="quizItemsTitle"></h2>
+                    <ul class="list"></ul>
+                </div>
+                <div class="quizNumber">
+                    <p class="number"><span class="itemNumber"></span></p>
+                    <button class="nextBtn">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="main.js"></script>
+</body>
+</html>
