@@ -165,7 +165,6 @@ const UI = {
              clearInterval(timerToClean)
            }
         }, 1000);
-        clearInterval(timerToClean);
     },
     init(){
         const {startTheGame, exittTheGame, continueTheGame, nextBtn, quizList} = this.loadSelector();
