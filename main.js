@@ -1,6 +1,9 @@
 
 
 const UI = {
+    count:0,
+    timerToClean: "",
+    timeToLeft: "",
     loadSelector(){
         const header = document.querySelector(".header");
         const startTheGame = document.querySelector(".startBtn");
@@ -13,6 +16,8 @@ const UI = {
         const quizList = document.querySelector(".list");
         const itemNumber = document.querySelector(".itemNumber");
         const nextBtn = document.querySelector(".nextBtn");
+        const timeLeft = document.querySelector(".timeLeft");
+        const quizWrapper = document.querySelector(".quizesWrapper");
         let counter;
         return {
             header,
@@ -26,7 +31,9 @@ const UI = {
             quizList,
             itemNumber,
             nextBtn,
-            counter
+            counter,
+            timeLeft,
+            quizWrapper
         }
     },
     quizItemList(){
@@ -96,8 +103,11 @@ const UI = {
         const answer = e.target.parentElement.id;
         if(item === answer){
             e.target.children[1].innerHTML = `<i class="far right fa-check-circle"></i>`
+            this.count++;
             quizList.classList.add("disabled");
             nextBtn.style.display = "block";
+            clearInterval(this.timerToClean)
+            clearInterval(this.timeToLeft)
         }else if(!answer){
             
         }else{
@@ -109,11 +119,18 @@ const UI = {
             }
             quizList.classList.add("disabled");
             nextBtn.style.display = "block";
+            clearInterval(this.timerToClean);
+            clearInterval(this.timeToLeft);
         }
     },
     removeDisabled(){
         const {quizList} = this.loadSelector()
         quizList.classList.remove("disabled")
+    },
+    playGameAgain(e){
+        if(e.target.classList.contains("playAgain")){
+            location.reload()
+        }
     },
     displayTheItems(val){
         const {quizItemsTitle, quizList, itemNumber} = this.loadSelector();
@@ -156,21 +173,34 @@ const UI = {
         header.style.display = "none";
         quizBody.style.display = "block";
     },
+    displaytimer(num){
+        const {timeLeft} = this.loadSelector();
+        this.timeToLeft = setInterval(()=>{
+            num++
+            if(num === 3980){
+                clearInterval(this.timeToLeft)
+            }else{
+                timeLeft.style.width = num/5.999 + "px";
+            }
+        })
+    },
     countDown(num){
         let {runningTIme} = this.loadSelector();
-        const timerToClean = setInterval(() => {
+        this.timerToClean = setInterval(() => {
             num--
             runningTIme.textContent = num
            if(num === 0){
-             clearInterval(timerToClean)
+             clearInterval(this.timerToClean)
            }
         }, 1000);
+        this.displaytimer(num)
     },
     init(){
-        const {startTheGame, exittTheGame, continueTheGame, nextBtn, quizList} = this.loadSelector();
+        const {startTheGame, exittTheGame, continueTheGame, nextBtn, quizList, quizWrapper} = this.loadSelector();
         startTheGame.addEventListener("click", this.startGame.bind(this));
         exittTheGame.addEventListener("click", this.exitGame.bind(this));
-        continueTheGame.addEventListener("click", this.continueGame.bind(this))
+        continueTheGame.addEventListener("click", this.continueGame.bind(this));
+        quizWrapper.addEventListener("click", this.playGameAgain.bind(this));
         this.displayTheItems()
         let count = 0;
         nextBtn.addEventListener("click", ()=>{
@@ -179,17 +209,16 @@ const UI = {
             this.displayTheItems(count)
             this.removeDisabled();
             nextBtn.style.display = "none";
-            if(count === 4){
-                nextBtn.style.display = "none";
+            if(count === 5){
+                quizWrapper.innerHTML = `<h1 class="result">You got ${this.count} out of ${this.quizItemList().length}</h1>
+                <button class="playAgain">Play Again</button>
+                `
             }
         });
         this.displayTheItems(count)
-        quizList.addEventListener("click", this.checkingTheItem.bind(this))
+        quizList.addEventListener("click", this.checkingTheItem.bind(this));
     }
 };
 UI.init();
-
-
-
 
 

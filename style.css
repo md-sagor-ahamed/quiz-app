@@ -101,24 +101,42 @@ body{
 .quizesWrapper .timeAndTitle .time{
     margin-top: 2px;
     background: skyblue;
-    padding: 8px;
-    padding-left: 15px;
-    padding-right: 0;
+    width: 130px;
 }
 .quizesWrapper .timeAndTitle .time p{
     text-transform: capitalize;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-left: 10px;
+    display: inline-flex;
+    align-items: center;
+    
 }
 .quizesWrapper .timeAndTitle .time p .runningTIme{
     background: #999;
-    padding: 8px 12px;
     color: #fff;
     font-weight: bold;
+    width: 45px;
+    height: 100%;
+    margin-left: 5px;
+    align-items: center;
+    text-align: center;
+    padding-top: 6px;
+    padding-bottom: 8px;
+    display: block;
+}
+.quizesWrapper .timeAndTitle{
+    border-bottom: 2px solid rgb(148, 146, 146);
 }
 .quizesWrapper .timeLeft{
-    width: 100%;
-    height: 2px;
+    position: relative;
+    top: -2px;
+    left: 0px;
     background: blue;
-    margin-bottom: 20px;
+    height: 2px;
+    width: 0px;
 }
 .quizesWrapper .quizItems .quizItemsTitle{
     padding: 15px 60px;
@@ -174,4 +192,30 @@ body{
 .quizesWrapper .quizNumber .nextBtn:hover{
     cursor: pointer;
     background: rgb(0, 0, 165);
+}
+.result{
+    border: none;
+    outline: none;
+    font-size: 22px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
+    background: rgb(57, 225, 255);
+    padding: 20px 60px;
+    margin-bottom: 5px;
+}
+.playAgain{
+    border: none;
+    outline: none;
+    font-size: 22px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
+    background: rgb(57, 225, 255);
+    padding: 20px 110px;
+    transition: .3s;
+}
+.playAgain:hover{
+    cursor: pointer;
+    background: rgb(4, 161, 189);
 }
