@@ -2,6 +2,7 @@
 
 const UI = {
     count:0,
+    count2:0,
     timerToClean: "",
     timeToLeft: "",
     loadSelector(){
@@ -96,18 +97,21 @@ const UI = {
         ]
         return items;
     },
-    checkingTheItem(e){
+    stopTimerAndDisabledItem(){
         const {quizList, nextBtn} = this.loadSelector();
+        quizList.classList.add("disabled");
+        nextBtn.style.display = "block";
+        clearInterval(this.timerToClean);
+        clearInterval(this.timeToLeft);
+    },
+    checkingTheItem(e){
         const value = document.querySelectorAll(".quizItems")
         const item = e.target.textContent;
         const answer = e.target.parentElement.id;
         if(item === answer){
             e.target.children[1].innerHTML = `<i class="far right fa-check-circle"></i>`
             this.count++;
-            quizList.classList.add("disabled");
-            nextBtn.style.display = "block";
-            clearInterval(this.timerToClean)
-            clearInterval(this.timeToLeft)
+            this.stopTimerAndDisabledItem();
         }else if(!answer){
             
         }else{
@@ -117,10 +121,7 @@ const UI = {
                     value[i].parentElement.children[1].innerHTML = `<i class="far right fa-check-circle"></i>`
                 }
             }
-            quizList.classList.add("disabled");
-            nextBtn.style.display = "block";
-            clearInterval(this.timerToClean);
-            clearInterval(this.timeToLeft);
+            this.stopTimerAndDisabledItem();
         }
     },
     removeDisabled(){
@@ -128,8 +129,9 @@ const UI = {
         quizList.classList.remove("disabled")
     },
     playGameAgain(e){
+        const {quizWrapper, quizBody} = this.loadSelector()
         if(e.target.classList.contains("playAgain")){
-            location.reload()
+            location.reload();
         }
     },
     displayTheItems(val){
@@ -147,7 +149,6 @@ const UI = {
                 li.className = "quizItems"
                 let span = document.createElement("span");
                 span.className = "icon"
-                // span.textContent = "sagor ahamed"
                 li.textContent = listItems;
                 div.className = "quizItemList";
                 div.appendChild(li);
@@ -155,6 +156,19 @@ const UI = {
                 quizList.appendChild(div);
             })
             itemNumber.textContent = `${list.id} out of ${item.length} Questions`
+        }
+    },
+    netItem(){
+        const {nextBtn, quizWrapper} = this.loadSelector();
+        this.count2++;
+        this.countDown(15)
+        this.displayTheItems(this.count2)
+        this.removeDisabled();
+        nextBtn.style.display = "none";
+        if(this.count2 === 5){
+            quizWrapper.innerHTML = `<h1 class="result">You got ${this.count} out of ${this.quizItemList().length}</h1>
+            <button class="playAgain">Play Again</button>
+            `
         }
     },
     continueGame(){
@@ -173,12 +187,24 @@ const UI = {
         header.style.display = "none";
         quizBody.style.display = "block";
     },
+    autoCompleteTheItem(){
+        const {quizList, nextBtn} = this.loadSelector();
+        const answer = quizList.id;
+        const items = document.querySelectorAll(".quizItemList .quizItems");
+        for(let i = 0; i < items.length; i++){
+            if(items[i].textContent === answer){
+                items[i].nextElementSibling.innerHTML = `<i class="far right fa-check-circle"></i>`
+            }
+        };
+        this.stopTimerAndDisabledItem();
+    },
     displaytimer(num){
         const {timeLeft} = this.loadSelector();
         this.timeToLeft = setInterval(()=>{
             num++
             if(num === 3980){
-                clearInterval(this.timeToLeft)
+                clearInterval(this.timeToLeft);
+                this.autoCompleteTheItem()
             }else{
                 timeLeft.style.width = num/5.999 + "px";
             }
@@ -201,22 +227,10 @@ const UI = {
         exittTheGame.addEventListener("click", this.exitGame.bind(this));
         continueTheGame.addEventListener("click", this.continueGame.bind(this));
         quizWrapper.addEventListener("click", this.playGameAgain.bind(this));
-        this.displayTheItems()
-        let count = 0;
-        nextBtn.addEventListener("click", ()=>{
-            count++;
-            this.countDown(15)
-            this.displayTheItems(count)
-            this.removeDisabled();
-            nextBtn.style.display = "none";
-            if(count === 5){
-                quizWrapper.innerHTML = `<h1 class="result">You got ${this.count} out of ${this.quizItemList().length}</h1>
-                <button class="playAgain">Play Again</button>
-                `
-            }
-        });
-        this.displayTheItems(count)
+        nextBtn.addEventListener("click", this.netItem.bind(this));
         quizList.addEventListener("click", this.checkingTheItem.bind(this));
+        this.displayTheItems()
+        this.displayTheItems(this.count2)
     }
 };
 UI.init();
